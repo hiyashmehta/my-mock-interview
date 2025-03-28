@@ -14,13 +14,18 @@ export async function signUp(params: SignUpParams) {
         if(userRecord.exists) {
             return {
                 success: false,
-                messsage; "User already exists. Please sign in instead."
+                message: "User already exists. Please sign in instead."
             }
         }
 
         await db.collection("users").doc(uid).set({
             name, email
         })
+
+        return {
+            success: true,
+            message: "Account created successfully. Please Sign In." 
+        }
     } catch (e: any) {
         console.error("Error creating a user", e);
 

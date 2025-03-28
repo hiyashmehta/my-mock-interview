@@ -12,6 +12,7 @@ import FormField from './FormField';
 import { useRouter } from 'next/router';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebase/client';
+import { signIn, signUp } from '@/lib/actions/auth.actions';
 
 const authFormSchema = (type: FormType) => {
     return z.object({
@@ -34,7 +35,7 @@ const AuthForm = ({type}: { type: FormType }) => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             if(type === "sign-up") {
                 const { name, email, password } = values;
@@ -43,7 +44,7 @@ const AuthForm = ({type}: { type: FormType }) => {
 
                 const result = await signUp({
                     uid: userCredentials.user.uid,
-                    name: name,
+                    name: name!,
                     email,
                     password,
                 })
